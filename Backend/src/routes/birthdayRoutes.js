@@ -4,7 +4,7 @@ import Birthday from '../models/Birthday.js'
 const router = express.Router();
 
 // POST: Add a birthday
-router.post('/add',async(req,res)=>{
+router.post('/',async(req,res)=>{
     try{
         const {name,dob,email} = req.body;
         const newEntry = new Birthday({name,dob,email});
