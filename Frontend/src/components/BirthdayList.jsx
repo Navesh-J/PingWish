@@ -17,6 +17,10 @@ const BirthdayList = ({ birthdays, onDelete }) => {
   // }
 
   const handleDelete = async (id) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this birthday?"
+    );
+    if (!confirmDelete) return;
     try {
       await axios.delete(`/${id}`);
       toast.error("Birthday deleted");
@@ -42,6 +46,10 @@ const BirthdayList = ({ birthdays, onDelete }) => {
             birthdays.map(({ _id, name, dob, email }) => (
               <motion.li
                 key={_id}
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ duration: 0.4 }}
                 className="flex justify-between items-center p-2 border rounded"
               >
                 <div>
@@ -49,12 +57,14 @@ const BirthdayList = ({ birthdays, onDelete }) => {
                   <p className="text-sm">{new Date(dob).toDateString()}</p>
                   <p className="text-xs text-gray-600">{email}</p>
                 </div>
-                <button
+                <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
                   onClick={() => handleDelete(_id)}
-                  className="bg-red-600 text-white px-2 py-1 rounded"
+                  className="bg-red-600 text-white px-2 py-1 rounded cursor-pointer"
                 >
                   Delete
-                </button>
+                </motion.button>
               </motion.li>
             ))}
         </AnimatePresence>

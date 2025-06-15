@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { toast } from "react-toastify";
 import axios from "../services/api.js";
+import { motion } from "framer-motion";
 
 const AddBirthdayForm = ({ onAdd }) => {
   const [form, setForm] = useState({ name: "", dob: "", email: "" });
@@ -26,9 +27,12 @@ const AddBirthdayForm = ({ onAdd }) => {
   };
 
   return (
-    <form
+    <motion.form
+      initial={{ y: -20, opacity: 0 }}
+      animate={{ y: 0, opacity: 1 }}
+      transition={{ duration: 0.4 }}
       onSubmit={handleSubmit}
-    //   className="space-y-4 max-w-md mx-auto p-4 border rounded"
+      //   className="space-y-4 max-w-md mx-auto p-4 border rounded"
       className="max-w-md mx-auto p-4 border rounded mb-6"
     >
       <h2 className="text-xl font-semibold">Add Birthday</h2>
@@ -59,14 +63,16 @@ const AddBirthdayForm = ({ onAdd }) => {
         required
       />
 
-      <button
+      <motion.button
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
         type="submit"
-        className="bg-blue-600 text-white px-4 py-2 rounded"
+        className="bg-blue-600 text-white px-4 py-2 rounded cursor-pointer"
       >
         Save Birthday
-      </button>
+      </motion.button>
       {/* {message && <p className="mt-2 text-sm text-green-700">{message}</p>} */}
-    </form>
+    </motion.form>
   );
 };
 
