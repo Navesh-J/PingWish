@@ -35,7 +35,7 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-app.put('/:id', async (req, res) => {
+router.put('/:id', async (req, res) => {
   try {
     const updated = await Birthday.findByIdAndUpdate(req.params.id, req.body, { new: true });
     res.json(updated);
