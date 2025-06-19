@@ -12,6 +12,7 @@ import BirthdayList from "./components/BirthdayList";
 function App() {
   const [birthdays, setBirthdays] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [editBirthday, setEditBirthday] = useState(null);
 
   const fetchBirthdays = async () => {
     try {
@@ -37,17 +38,17 @@ function App() {
       transition={{ duration: 0.5 }}
     >
       <h1 className="text-3xl font-bold text-center mb-6">
-        🎉 PingWish - Birthday Reminder
+        🎉 PingWish
       </h1>
       <ToastContainer position="top-right" autoClose={3000} />
-      <BirthdayForm onAdd={fetchBirthdays} />
+      <BirthdayForm onAdd={fetchBirthdays} editData={editBirthday} setEditData={setEditBirthday}/>
       {/* <BirthdayList birthdays={birthdays} onDelete={fetchBirthdays}/> */}
       {loading ? (
         <div className="flex justify-center mt-10">
           <ScaleLoader size={50} color="#3b82f6" />
         </div>
       ) : (
-        <BirthdayList birthdays={birthdays} onDelete={fetchBirthdays} />
+        <BirthdayList birthdays={birthdays} onDelete={fetchBirthdays} onEdit={setEditBirthday}/>
       )}
     </motion.div>
   );

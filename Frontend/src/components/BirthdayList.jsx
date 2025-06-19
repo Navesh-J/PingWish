@@ -1,9 +1,9 @@
-import { useState, useEffect } from "react";
+// import { useState, useEffect } from "react";
 import { toast } from "react-toastify";
 import axios from "../services/api.js";
 import { motion, AnimatePresence } from "framer-motion";
 
-const BirthdayList = ({ birthdays, onDelete }) => {
+const BirthdayList = ({ birthdays, onDelete, onEdit}) => {
   // const [birthdays,setBirthdays] = useState([])
   // const [error,setError] = useState()
 
@@ -39,7 +39,6 @@ const BirthdayList = ({ birthdays, onDelete }) => {
   return (
     <div className="max-w-md mx-auto mt-6 p-4 border rounded">
       <h2 className="text-xl font-semibold mb-4">Saved Birthdays</h2>
-      {/* {error && <p className="text-red-500">{error}</p>} */}
       <ul className="space-y-2">
         <AnimatePresence>
           {Array.isArray(birthdays) &&
@@ -57,6 +56,16 @@ const BirthdayList = ({ birthdays, onDelete }) => {
                   <p className="text-sm">{new Date(dob).toDateString()}</p>
                   <p className="text-xs text-gray-600">{email}</p>
                 </div>
+                <div>
+                  <motion.button
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                  onClick={() => onEdit({ _id, name, dob, email })}
+                  className="bg-yellow-200 text-gray-700 px-2 py-1 rounded mr-2 cursor-pointer"
+                >
+                  Edit
+                </motion.button>
+
                 <motion.button
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -65,6 +74,7 @@ const BirthdayList = ({ birthdays, onDelete }) => {
                 >
                   Delete
                 </motion.button>
+                </div>
               </motion.li>
             ))}
         </AnimatePresence>
