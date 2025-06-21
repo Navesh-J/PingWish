@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import axios from "../services/api.js";
 import { motion, AnimatePresence } from "framer-motion";
 
-const BirthdayList = ({ birthdays, onDelete, onEdit}) => {
+const BirthdayList = ({ birthdays, onDelete, onEdit, searchQuery }) => {
   // const [birthdays,setBirthdays] = useState([])
   // const [error,setError] = useState()
 
@@ -32,9 +32,19 @@ const BirthdayList = ({ birthdays, onDelete, onEdit}) => {
     }
   };
 
-  // useEffect(()=>{
-  //     fetchBirthdays();
-  // },[]);
+  const handleToggleReminder = async (id) => {
+    try {
+      await axios.put(`/${id}/toggle`);
+      onDelete(); // refresh the list
+      toast.success("Reminder toggled");
+    } catch (err) {
+      toast.error("Toggle failed");
+    }
+  };
+
+  const filteredBirthdays = birthdays.filter(({ name, email }) =>
+    `${name} ${email}`.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   return (
     <div className="max-w-md mx-auto mt-6 p-4 border rounded bg-[var(--color-card)] text-[var(--color-text)] border-[var(--color-border)]">
@@ -42,7 +52,7 @@ const BirthdayList = ({ birthdays, onDelete, onEdit}) => {
       <ul className="space-y-2">
         <AnimatePresence>
           {Array.isArray(birthdays) &&
-            birthdays.map(({ _id, name, dob, email }) => (
+            filteredBirthdays.map(({ _id, name, dob, email, reminder }) => (
               <motion.li
                 key={_id}
                 initial={{ opacity: 0, scale: 0.95 }}
@@ -58,22 +68,34 @@ const BirthdayList = ({ birthdays, onDelete, onEdit}) => {
                 </div>
                 <div>
                   <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => onEdit({ _id, name, dob, email })}
-                  className="bg-yellow-200 text-gray-700 px-2 py-1 rounded mr-2 cursor-pointer"
-                >
-                  Edit
-                </motion.button>
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => onEdit({ _id, name, dob, email })}
+                    className="bg-yellow-200 text-gray-700 px-2 py-1 rounded mr-2 cursor-pointer"
+                  >
+                    Edit
+                  </motion.button>
 
-                <motion.button
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                  onClick={() => handleDelete(_id)}
-                  className="bg-red-600 text-white px-2 py-1 rounded cursor-pointer"
-                >
-                  Delete
-                </motion.button>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => handleDelete(_id)}
+                    className="bg-red-600 text-white px-2 py-1 rounded cursor-pointer"
+                  >
+                    Delete
+                  </motion.button>
+                  <motion.button
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => handleToggleReminder(_id)}
+                    className={`px-2 py-1 rounded  m-2 cursor-pointer ${
+                      reminder
+                        ? "bg-green-600 text-white"
+                        : "bg-gray-400 text-black"
+                    }`}
+                  >
+                    {reminder ? "🔔" : "🔕"}
+                  </motion.button>
                 </div>
               </motion.li>
             ))}

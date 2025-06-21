@@ -46,7 +46,7 @@ const AddBirthdayForm = ({ onAdd, editData, setEditData }) => {
       onSubmit={handleSubmit}
       className="max-w-md mx-auto p-4 border rounded mb-6 bg-[var(--color-card)] text-[var(--color-text)] border-[var(--color-border)]"
     >
-      <h2 className="text-xl font-semibold">
+      <h2 className="text-xl font-semibold mb-2">
         {editData ? "Edit Birthday" : "Add Birthday"}
       </h2>
       <input
@@ -72,7 +72,7 @@ const AddBirthdayForm = ({ onAdd, editData, setEditData }) => {
         placeholder="Email"
         value={form.email}
         onChange={handleChange}
-        className="w-full mb-2 p-2 border rounded"
+        className="w-full mb-3 p-2 border rounded"
         required
       />
       <div className="flex justify-between">

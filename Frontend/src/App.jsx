@@ -11,6 +11,7 @@ import BirthdayList from "./components/BirthdayList";
 
 function App() {
   const [birthdays, setBirthdays] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
   const [editBirthday, setEditBirthday] = useState(null);
   const [isDark, setIsDark] = useState(
@@ -63,7 +64,7 @@ function App() {
         <h1 className="text-3xl font-bold">🎉 PingWish</h1>
         <button
           onClick={toggleDark}
-          className="w-10 h-10 flex items-center justify-center rounded-full bg-[var(--color-bg)] border border-[var(--color-border)] cursor-pointer"
+          className="w-10 h-10 flex items-center pb-0.5 justify-center rounded-full bg-[var(--color-bg)] border border-[var(--color-border)] cursor-pointer"
         >
           {isDark ? "🌙" : "☀️"}
         </button>
@@ -75,6 +76,14 @@ function App() {
         editData={editBirthday}
         setEditData={setEditBirthday}
       />
+      <input
+        type="text"
+        placeholder="Search by name or email"
+        value={searchQuery}
+        onChange={(e) => setSearchQuery(e.target.value)}
+        className="block w-full max-w-md mx-auto mb-4 p-2 border rounded"
+      />
+
       {loading ? (
         <div className="flex justify-center mt-10">
           <ScaleLoader size={50} color="#3b82f6" />
@@ -84,6 +93,7 @@ function App() {
           birthdays={birthdays}
           onDelete={fetchBirthdays}
           onEdit={setEditBirthday}
+          searchQuery={searchQuery}
         />
       )}
     </motion.div>
