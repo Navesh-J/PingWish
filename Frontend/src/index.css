@@ -1,1 +1,19 @@
 @import "tailwindcss";
+
+@theme {
+  --color-bg: white;
+  --color-text: black;
+  --color-card: #f9f9f9;
+  --color-border: #2c2c2c;
+  --color-btn: #2563eb;
+  --color-btn-text: white;
+}
+
+.dark {
+    --color-bg: #121212;
+    --color-text: #f1f1f1;
+    --color-card: #1e1e1e;
+    --color-border: #d4d4d4;
+    --color-btn: #3b82f6;
+    --color-btn-text: white;
+}

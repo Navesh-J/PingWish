@@ -44,7 +44,7 @@ const AddBirthdayForm = ({ onAdd, editData, setEditData }) => {
       animate={{ y: 0, opacity: 1 }}
       transition={{ duration: 0.4 }}
       onSubmit={handleSubmit}
-      className="max-w-md mx-auto p-4 border rounded mb-6"
+      className="max-w-md mx-auto p-4 border rounded mb-6 bg-[var(--color-card)] text-[var(--color-text)] border-[var(--color-border)]"
     >
       <h2 className="text-xl font-semibold">
         {editData ? "Edit Birthday" : "Add Birthday"}

@@ -13,6 +13,9 @@ function App() {
   const [birthdays, setBirthdays] = useState([]);
   const [loading, setLoading] = useState(true);
   const [editBirthday, setEditBirthday] = useState(null);
+  const [isDark, setIsDark] = useState(
+    document.documentElement.classList.contains("dark")
+  );
 
   const fetchBirthdays = async () => {
     try {
@@ -30,25 +33,58 @@ function App() {
     fetchBirthdays();
   }, []);
 
+  useEffect(() => {
+    const stored = localStorage.getItem("theme");
+    if (stored === "dark") {
+      document.documentElement.classList.add("dark");
+    }
+  }, []);
+
+  const toggleDark = () => {
+    const isCurrentlyDark = document.documentElement.classList.contains("dark");
+    if (isCurrentlyDark) {
+      document.documentElement.classList.remove("dark");
+      localStorage.setItem("theme", "light");
+    } else {
+      document.documentElement.classList.add("dark");
+      localStorage.setItem("theme", "dark");
+    }
+    setIsDark(!isCurrentlyDark);
+  };
+
   return (
     <motion.div
-      className="min-h-screen bg-gray-100 p-4"
+      className="min-h-screen bg-[var(--color-bg)] text-[var(--color-text)] transition-colors p-4"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
     >
-      <h1 className="text-3xl font-bold text-center mb-6">
-        🎉 PingWish
-      </h1>
+      <div className="flex items-center justify-between mb-6">
+        <h1 className="text-3xl font-bold">🎉 PingWish</h1>
+        <button
+          onClick={toggleDark}
+          className="w-10 h-10 flex items-center justify-center rounded-full bg-[var(--color-bg)] border border-[var(--color-border)] cursor-pointer"
+        >
+          {isDark ? "🌙" : "☀️"}
+        </button>
+      </div>
+
       <ToastContainer position="top-right" autoClose={3000} />
-      <BirthdayForm onAdd={fetchBirthdays} editData={editBirthday} setEditData={setEditBirthday}/>
-      {/* <BirthdayList birthdays={birthdays} onDelete={fetchBirthdays}/> */}
+      <BirthdayForm
+        onAdd={fetchBirthdays}
+        editData={editBirthday}
+        setEditData={setEditBirthday}
+      />
       {loading ? (
         <div className="flex justify-center mt-10">
           <ScaleLoader size={50} color="#3b82f6" />
         </div>
       ) : (
-        <BirthdayList birthdays={birthdays} onDelete={fetchBirthdays} onEdit={setEditBirthday}/>
+        <BirthdayList
+          birthdays={birthdays}
+          onDelete={fetchBirthdays}
+          onEdit={setEditBirthday}
+        />
       )}
     </motion.div>
   );

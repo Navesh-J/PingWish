@@ -37,7 +37,7 @@ const BirthdayList = ({ birthdays, onDelete, onEdit}) => {
   // },[]);
 
   return (
-    <div className="max-w-md mx-auto mt-6 p-4 border rounded">
+    <div className="max-w-md mx-auto mt-6 p-4 border rounded bg-[var(--color-card)] text-[var(--color-text)] border-[var(--color-border)]">
       <h2 className="text-xl font-semibold mb-4">Saved Birthdays</h2>
       <ul className="space-y-2">
         <AnimatePresence>
