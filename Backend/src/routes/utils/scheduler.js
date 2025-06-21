@@ -17,13 +17,13 @@ const runScheduler = async () => {
       const dob = entry.dob; // Format: 'YYYY-MM-DD'
       const birthdayThisYear = new Date(today.getFullYear(), dob.getMonth(), dob.getDate());
 
-      if (isSameDay(birthdayThisYear, today)) {
+      if (entry.reminder && isSameDay(birthdayThisYear, today)) {
         await sendEmail({
           to: entry.email,
           subject: `🎉 It's ${entry.name}'s Birthday Today!`,
           text: `Hey there! Just reminding you — it's ${entry.name}'s birthday today! 🎂`,
         });
-      } else if (isSameDay(birthdayThisYear, tomorrow)) {
+      } else if (entry.reminder && isSameDay(birthdayThisYear, tomorrow)) {
         await sendEmail({
           to: entry.email,
           subject: `🎈 Upcoming: ${entry.name}'s Birthday Tomorrow!`,

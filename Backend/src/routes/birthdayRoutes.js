@@ -44,5 +44,16 @@ router.put('/:id', async (req, res) => {
   }
 });
 
+router.put('/:id/toggle', async (req, res) => {
+  try {
+    const birthday = await Birthday.findById(req.params.id);
+    birthday.reminder = !birthday.reminder;
+    await birthday.save();
+    res.json({ message: 'Reminder toggled', reminder: birthday.reminder });
+  } catch (err) {
+    res.status(500).json({ error: 'Toggle failed' });
+  }
+});
+
 
 export default router;
