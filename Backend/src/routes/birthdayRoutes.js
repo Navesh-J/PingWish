@@ -1,5 +1,6 @@
 import express from 'express'
 import Birthday from '../models/Birthday.js'
+import runScheduler from './utils/scheduler.js';
 
 const router = express.Router();
 
@@ -55,5 +56,14 @@ router.put('/:id/toggle', async (req, res) => {
   }
 });
 
+router.get('/run-scheduler', async (req, res) => {
+  try {
+    await runScheduler();
+    res.send('✅ Scheduler executed.');
+  } catch (err) {
+    console.error('❌ Scheduler error:', err.message);
+    res.status(500).send('Scheduler failed.');
+  }
+});
 
 export default router;

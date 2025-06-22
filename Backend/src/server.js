@@ -7,7 +7,6 @@ import cors from 'cors';
 
 
 import birthdayRoutes from './routes/birthdayRoutes.js'
-import testEmailRoute from './routes/testEmail.js';
 import './routes/utils/scheduler.js'
 
 const app = express();
@@ -15,7 +14,6 @@ app.use(cors());
 app.use(express.json());
 
 app.use('/api/birthdays',birthdayRoutes);
-app.use('/api', testEmailRoute);
 
 // Connect to MongoDB
 mongoose.connect(process.env.MONGO_URI)

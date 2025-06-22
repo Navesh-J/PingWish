@@ -37,6 +37,6 @@ const runScheduler = async () => {
 };
 
 // ✅ Schedule to run every day at 00:00 (midnight)
-cron.schedule('0 9 * * *', runScheduler);
+// cron.schedule('0 9 * * *', runScheduler);
 
 export default runScheduler;
