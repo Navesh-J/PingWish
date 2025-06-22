@@ -8,6 +8,7 @@ import { motion } from "framer-motion";
 
 import BirthdayForm from "./components/AddBirthdayForm";
 import BirthdayList from "./components/BirthdayList";
+import logo from "./assets/logo.svg";
 
 function App() {
   const [birthdays, setBirthdays] = useState([]);
@@ -40,9 +41,7 @@ function App() {
 
   const handleToggle = (id) => {
     setBirthdays((prev) =>
-      prev.map((b) =>
-        b._id === id ? { ...b, reminder: !b.reminder } : b
-      )
+      prev.map((b) => (b._id === id ? { ...b, reminder: !b.reminder } : b))
     );
   };
 
@@ -73,7 +72,9 @@ function App() {
       transition={{ duration: 0.5 }}
     >
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-3xl font-bold">🎉 PingWish</h1>
+        <h1 className="text-3xl font-bold flex items-center gap-2">
+          <img src={logo} className="w-10" alt="logo" /> PingWish
+        </h1>
         <button
           onClick={toggleDark}
           className="w-10 h-10 flex items-center pb-0.5 justify-center rounded-full bg-[var(--color-bg)] border border-[var(--color-border)] cursor-pointer"
