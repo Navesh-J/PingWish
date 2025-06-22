@@ -23,10 +23,10 @@ const AddBirthdayForm = ({ onAdd, editData, setEditData }) => {
     e.preventDefault();
     try {
       if (editData) {
-        await axios.put(`/${editData._id}`, form);
+        await axios.put(`/birthdays/${editData._id}`, form);
         toast.success("Birthday updated");
       } else {
-        await axios.post("/", form);
+        await axios.post("/birthdays", form);
         toast.success("Birthday saved!");
       }
       setForm({ name: "", dob: "", email: "" });

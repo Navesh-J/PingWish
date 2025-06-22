@@ -4,17 +4,6 @@ import axios from "../services/api.js";
 import { motion, AnimatePresence } from "framer-motion";
 
 const BirthdayList = ({ birthdays, onDelete, onEdit, searchQuery }) => {
-  // const [birthdays,setBirthdays] = useState([])
-  // const [error,setError] = useState()
-
-  // const fetchBirthdays = async()=>{
-  //     try{
-  //         const res = await axios.get("/");
-  //         setBirthdays(res.data);
-  //     }catch(err){
-  //         setError("Failed to fetch birthdays")
-  //     }
-  // }
 
   const handleDelete = async (id) => {
     const confirmDelete = window.confirm(
@@ -22,7 +11,7 @@ const BirthdayList = ({ birthdays, onDelete, onEdit, searchQuery }) => {
     );
     if (!confirmDelete) return;
     try {
-      await axios.delete(`/${id}`);
+      await axios.delete(`/birthdays/${id}`);
       toast.error("Birthday deleted");
       // setBirthdays(birthdays.filter((b) => b._id !== id));
       onDelete();
@@ -34,7 +23,7 @@ const BirthdayList = ({ birthdays, onDelete, onEdit, searchQuery }) => {
 
   const handleToggleReminder = async (id) => {
     try {
-      await axios.put(`/${id}/toggle`);
+      await axios.put(`/birthdays/${id}/toggle`);
       onDelete(); // refresh the list
       toast.success("Reminder toggled");
     } catch (err) {

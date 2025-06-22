@@ -21,7 +21,7 @@ function App() {
   const fetchBirthdays = async () => {
     try {
       setLoading(true);
-      const res = await axios.get("/");
+      const res = await axios.get("/birthdays");
       setBirthdays(res.data);
     } catch (err) {
       console.error("Failed to fetch birthdays:", err.message);
