@@ -1,12 +1,42 @@
-# React + Vite
+# 🎂 PingWish — Birthday Reminder App (Frontend)
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A clean, modern web interface for managing birthday reminders. Built using **React**, styled with **Tailwind CSS**, enhanced with **animations**, **notifications**, **dark mode**, and connected to a backend API for persistent storage and email reminders.
 
-Currently, two official plugins are available:
+## 🌐 Live Demo
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+[Visit the app](https://pingwish.vercel.app)
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 🚀 Tech Stack
+
+- **React 19** — UI library for building interactive interfaces
+- **Vite** — Lightweight and fast development build tool
+- **Tailwind CSS v4** — Utility-first CSS framework with modern theme variable support
+- **Framer Motion** — Animations for smooth UI transitions
+- **React Toastify** — Toast notifications for feedback
+- **Axios** — HTTP client for making API requests
+- **Render** — Backend hosting (API + Cron scheduler)
+- **Vercel** — Frontend hosting
+
+---
+
+## ✨ Features
+
+### 📌 Core Features
+- **Add New Birthdays** — Save name, email, and DOB
+- **Email Reminders** — Sends automated emails 1 day before and on the birthday
+- **Toggle Reminders** — Enable or disable email reminders per person
+- **Edit Entries** — Modify name, email, or date of birth
+- **Delete with Confirmation** — Prevent accidental deletions
+- **Search** — Filter birthdays by name or email in real-time
+- **Sort by Upcoming** — Automatically shows nearest birthdays first
+
+### 🌙 UI/UX Features
+- **Dark Mode** — Seamlessly switch between light and dark themes
+- **Animated List** — Birthday entries animate in/out using Framer Motion
+- **Loading Spinner** — Shows loader when data is being fetched
+- **Toast Alerts** — Get instant feedback on actions like save/delete/error
+- **Responsive Design** — Works well on mobile and desktop (if responsive enabled)
+
+---
