@@ -34,6 +34,18 @@ function App() {
     fetchBirthdays();
   }, []);
 
+  const handleDelete = (id) => {
+    setBirthdays((prev) => prev.filter((b) => b._id !== id));
+  };
+
+  const handleToggle = (id) => {
+    setBirthdays((prev) =>
+      prev.map((b) =>
+        b._id === id ? { ...b, reminder: !b.reminder } : b
+      )
+    );
+  };
+
   useEffect(() => {
     const stored = localStorage.getItem("theme");
     if (stored === "dark") {
@@ -91,7 +103,8 @@ function App() {
       ) : (
         <BirthdayList
           birthdays={birthdays}
-          onDelete={fetchBirthdays}
+          onDelete={handleDelete}
+          onToggle={handleToggle}
           onEdit={setEditBirthday}
           searchQuery={searchQuery}
         />

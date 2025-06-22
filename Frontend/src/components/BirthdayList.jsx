@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 import axios from "../services/api.js";
 import { motion, AnimatePresence } from "framer-motion";
 
-const BirthdayList = ({ birthdays, onDelete, onEdit, searchQuery }) => {
+const BirthdayList = ({ birthdays, onDelete, onEdit, searchQuery,onToggle }) => {
 
   const handleDelete = async (id) => {
     const confirmDelete = window.confirm(
@@ -13,18 +13,16 @@ const BirthdayList = ({ birthdays, onDelete, onEdit, searchQuery }) => {
     try {
       await axios.delete(`/birthdays/${id}`);
       toast.error("Birthday deleted");
-      // setBirthdays(birthdays.filter((b) => b._id !== id));
-      onDelete();
+      onDelete(id);
     } catch (err) {
-      toast.warn("Delete failed");
-      // setError("Delete Failed :", err.message);
+      toast.warn("Delete failed");  
     }
   };
 
   const handleToggleReminder = async (id) => {
     try {
       await axios.put(`/birthdays/${id}/toggle`);
-      onDelete(); // refresh the list
+      onToggle(id); // refresh the list
       toast.success("Reminder toggled");
     } catch (err) {
       toast.error("Toggle failed");
