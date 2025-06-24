@@ -5,10 +5,6 @@ const birthdaySchema = new mongoose.Schema({
   dob: { type: Date, required: true },
   email: { type: String, required: true },
   reminder: { type: Boolean, default: true },
-  lastSent: {
-    type: Date,
-    default: null,
-  },
 });
 
 const Birthday = mongoose.model("Birthday", birthdaySchema);
