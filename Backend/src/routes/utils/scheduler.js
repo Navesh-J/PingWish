@@ -6,7 +6,7 @@ import sendEmail from "./sendEmail.js";
 const runScheduler = async () => {
   const now = new Date();
 
-  if (now.getHours() !== 9 || now.getMinutes() !== 0) {
+  if (now.getHours() !== 3 || now.getMinutes() !== 30) {  // server running according to UTC
     console.log("⏱ Not 9:00 AM — skipping mail sending.");
     return;
   }
