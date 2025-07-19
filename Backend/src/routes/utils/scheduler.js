@@ -1,12 +1,13 @@
 import { addDays, isSameDay } from "date-fns";
 
-import Birthday from "../../models/Birthday.js";
+import Birthday from "../../models/Birthday.model.js";
 import sendEmail from "./sendEmail.js";
 
 const runScheduler = async () => {
   const now = new Date();
 
-  if (now.getHours() !== 3 || now.getMinutes() !== 30) {  // server running according to UTC
+  if (now.getHours() !== 3 || now.getMinutes() !== 30) {
+    // server running according to UTC
     console.log("⏱ Not 9:00 AM — skipping mail sending.");
     return;
   }
@@ -21,7 +22,11 @@ const runScheduler = async () => {
 
     for (const entry of allBirthdays) {
       const dob = entry.dob;
-      const birthdayThisYear = new Date(today.getFullYear(), dob.getMonth(), dob.getDate());
+      const birthdayThisYear = new Date(
+        today.getFullYear(),
+        dob.getMonth(),
+        dob.getDate()
+      );
 
       if (entry.reminder && isSameDay(birthdayThisYear, today)) {
         await sendEmail({

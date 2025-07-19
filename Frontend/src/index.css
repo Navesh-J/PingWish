@@ -17,3 +17,26 @@
     --color-btn: #3b82f6;
     --color-btn-text: white;
 }
+
+.perspective { perspective: 1000px; }
+.transform-preserve { transform-style: preserve-3d; }
+.rotate-y-180 { transform: rotateY(180deg); }
+.backface-hidden { backface-visibility: hidden; }
+
+/* Slide-in animation for banner */
+@keyframes slide-in {
+  from { transform: translateY(-50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+.animate-slide-in {
+  animation: slide-in 1s ease-out forwards;
+}
+
+.neon-blue {
+  border: 1px solid #0ff;
+  box-shadow: 0 0 8px #0ff, 0 0 6px #0ff;
+}
+.neon-green {
+  border: 1px solid #0f0;
+  box-shadow: 0 0 8px #0f0, 0 0 6px #0f0;
+}

@@ -4,15 +4,22 @@ dotenv.config();
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
-
+import cookieParser from 'cookie-parser'
 
 import birthdayRoutes from './routes/birthdayRoutes.js'
+import authRoutes from './routes/authRoutes.js'
 import './routes/utils/scheduler.js'
 
 const app = express();
-app.use(cors());
+app.use(cors({
+  origin:'http://pingwish.vercel.app',
+  // origin:'http://localhost:5173',
+  credentials:true
+}));
 app.use(express.json());
+app.use(cookieParser())
 
+app.use('/api/auth',authRoutes)
 app.use('/api/birthdays',birthdayRoutes);
 
 // Connect to MongoDB
