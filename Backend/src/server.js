@@ -11,8 +11,11 @@ import authRoutes from './routes/authRoutes.js'
 import './routes/utils/scheduler.js'
 
 const app = express();
+
+const allowedOrigins = ["https://pingwish.vercel.app","http://pingwish.vercel.app","https://ping-wish.vercel.app","http://ping-wish.vercel.app"];
+
 app.use(cors({
-  origin:'http://pingwish.vercel.app',
+  origin:allowedOrigins,
   // origin:'http://localhost:5173',
   credentials:true
 }));
