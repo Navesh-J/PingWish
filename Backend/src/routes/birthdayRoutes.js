@@ -4,6 +4,17 @@ import runScheduler from './utils/scheduler.js'
 import auth from "../middleware/auth.js"
 
 const router = express.Router();
+
+router.get('/run-scheduler', async (req, res) => {
+  try {
+    await runScheduler();
+    res.send('✅ Scheduler executed.');
+  } catch (err) {
+    console.error('❌ Scheduler error:', err.message);
+    res.status(500).send('Scheduler failed.');
+  }
+});
+
 router.use(auth);
 
 // POST: Add a birthday
@@ -63,16 +74,6 @@ router.put('/:id/toggle', async (req, res) => {
     res.json({ message: 'Reminder toggled', reminder: birthday.reminder });
   } catch (err) {
     res.status(500).json({ error: 'Toggle failed' });
-  }
-});
-
-router.get('/run-scheduler', async (req, res) => {
-  try {
-    await runScheduler();
-    res.send('✅ Scheduler executed.');
-  } catch (err) {
-    console.error('❌ Scheduler error:', err.message);
-    res.status(500).send('Scheduler failed.');
   }
 });
 
