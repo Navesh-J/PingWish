@@ -85,16 +85,16 @@ function Home() {
   };
 
   
-  useEffect(() => {
-    const checkAuth = async () => {
-      try {
-        await axios.get("/auth/check");
-      } catch {
-        navigate("/auth");
-      }
-    };
-    checkAuth();
-  }, []);
+  // useEffect(() => {
+  //   const checkAuth = async () => {
+  //     try {
+  //       await axios.get("/auth/check");
+  //     } catch {
+  //       navigate("/auth");
+  //     }
+  //   };
+  //   checkAuth();
+  // }, []);
 
   const isAuthenticated = useAuthCheck();
   if (isAuthenticated === null) {
@@ -106,7 +106,8 @@ function Home() {
   }
 
   if (!isAuthenticated) {
-    window.location.href = "/auth"; // redirect to auth page
+    // window.location.href = "/auth"; // redirect to auth page
+    navigate("/auth")
     return null;
   }
 
