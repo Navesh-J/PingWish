@@ -114,28 +114,6 @@ The endpoint is protected by `CRON_SECRET` — Vercel automatically sends it as 
 
 ---
 
-## 🚢 Deploy to Vercel
-
-```bash
-# Push to GitHub, then:
-vercel deploy
-```
-
-**Required environment variables on Vercel:**
-- `MONGODB_URI`
-- `NEXTAUTH_SECRET`
-- `NEXTAUTH_URL` → set to your production URL e.g. `https://pingwish.vercel.app`
-- `EMAIL_USER`
-- `EMAIL_PASS`
-- `CRON_SECRET`
-
----
-
-## 🔄 Migrating Existing Data
-
-Your MongoDB Atlas data is **fully compatible** — same schema, same collection names. Just point `MONGODB_URI` to your existing Atlas cluster and all birthdays/users will be there.
-
----
 
 ## ✨ What's New vs Old Version
 
@@ -146,6 +124,5 @@ Your MongoDB Atlas data is **fully compatible** — same schema, same collection
 - ✅ Age display on each card
 - ✅ Color-coded avatar initials
 - ✅ Animated stats row (total, days until next, reminders on)
-- ✅ HTML email templates (not plain text)
 - ✅ TypeScript throughout
 - ✅ `react-hot-toast` (lighter than react-toastify)
