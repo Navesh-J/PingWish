@@ -5,12 +5,16 @@ export interface IUser extends Document {
   name: string;
   email: string;
   password: string;
+  resetToken?: string;
+  resetTokenExpiry?: Date;
 }
 
 const userSchema = new mongoose.Schema<IUser>({
   name: { type: String, required: true },
   email: { type: String, required: true, unique: true, lowercase: true },
   password: { type: String, required: true },
+  resetToken: { type: String },
+  resetTokenExpiry: { type: Date },
 });
 
 userSchema.pre("save", async function () {
@@ -21,4 +25,5 @@ userSchema.pre("save", async function () {
 const User: Model<IUser> =
   mongoose.models.User || mongoose.model<IUser>("User", userSchema);
 
+  
 export default User;
