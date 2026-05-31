@@ -5,3 +5,5 @@ node_modules/
 .next/
 out/
 *.tsbuildinfo
+
+pingwish_production_roadmap.svg
