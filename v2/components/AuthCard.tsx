@@ -5,9 +5,58 @@ import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import toast from "react-hot-toast";
+import Link from "next/link";
 
 interface Props {
   defaultTab: "login" | "register";
+}
+
+// 👁 Reusable password input with peek toggle
+function PasswordInput({
+  value,
+  onChange,
+  placeholder = "••••••••",
+  minLength,
+}: {
+  value: string;
+  onChange: (v: string) => void;
+  placeholder?: string;
+  minLength?: number;
+}) {
+  const [show, setShow] = useState(false);
+
+  return (
+    <div className="relative">
+      <input
+        className="w-full bg-neutral-50 dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-white rounded-xl py-3 pl-4 pr-12 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all placeholder:text-neutral-400 shadow-sm"
+        type={show ? "text" : "password"}
+        placeholder={placeholder}
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        required
+        minLength={minLength}
+      />
+      <button
+        type="button"
+        onClick={() => setShow((s) => !s)}
+        className="absolute right-3 top-1/2 -translate-y-1/2 text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-200 transition-colors p-1"
+        aria-label={show ? "Hide password" : "Show password"}
+      >
+        {show ? (
+          // Eye-off icon
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+          </svg>
+        ) : (
+          // Eye icon
+          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+            <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+          </svg>
+        )}
+      </button>
+    </div>
+  );
 }
 
 export default function AuthCard({ defaultTab }: Props) {
@@ -15,11 +64,9 @@ export default function AuthCard({ defaultTab }: Props) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  // Login state
   const [loginEmail, setLoginEmail] = useState("");
   const [loginPassword, setLoginPassword] = useState("");
 
-  // Register state
   const [regName, setRegName] = useState("");
   const [regEmail, setRegEmail] = useState("");
   const [regPassword, setRegPassword] = useState("");
@@ -33,7 +80,6 @@ export default function AuthCard({ defaultTab }: Props) {
         password: loginPassword,
         redirect: false,
       });
-
       if (res?.error) {
         toast.error("Invalid email or password");
       } else {
@@ -57,20 +103,13 @@ export default function AuthCard({ defaultTab }: Props) {
       const res = await fetch("/api/auth/register", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          name: regName,
-          email: regEmail,
-          password: regPassword,
-        }),
+        body: JSON.stringify({ name: regName, email: regEmail, password: regPassword }),
       });
       const data = await res.json();
-
       if (!res.ok) {
         toast.error(data.message || "Registration failed");
         return;
       }
-
-      // Auto sign in after register
       await signIn("credentials", {
         email: regEmail,
         password: regPassword,
@@ -98,9 +137,6 @@ export default function AuthCard({ defaultTab }: Props) {
             PingWish
           </h1>
         </div>
-        {/* <p className="text-neutral-500 dark:text-neutral-400 font-medium">
-          {isLogin ? "Sign in to your account" : "Create your free account"}
-        </p> */}
         <div>
           <span className="mt-2 inline-flex items-center justify-center text-xs sm:text-sm font-display font-medium tracking-wide text-neutral-500 dark:text-neutral-400 bg-neutral-100/80 dark:bg-neutral-800/50 backdrop-blur-md px-5 py-1.5 rounded-full border border-neutral-200 dark:border-neutral-700 shadow-sm transition-colors">
             🎉 Never Miss a Birthday
@@ -151,20 +187,27 @@ export default function AuthCard({ defaultTab }: Props) {
                   required
                 />
               </div>
+
               <div>
-                <label className="block text-xs font-bold mb-2 font-display tracking-wider uppercase text-neutral-500 dark:text-neutral-400">
-                  Password
-                </label>
-                <input
-                  className="w-full bg-neutral-50 dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-white rounded-xl py-3 px-4 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all placeholder:text-neutral-400 shadow-sm"
-                  type="password"
-                  placeholder="••••••••"
+                <div className="flex items-center justify-between mb-2">
+                  <label className="block text-xs font-bold font-display tracking-wider uppercase text-neutral-500 dark:text-neutral-400">
+                    Password
+                  </label>
+                  {/* Forgot password link */}
+                  <Link
+                    href="/reset-password"
+                    className="text-xs font-semibold text-brand-600 dark:text-brand-400 hover:underline transition-colors"
+                  >
+                    Forgot password?
+                  </Link>
+                </div>
+                <PasswordInput
                   value={loginPassword}
-                  onChange={(e) => setLoginPassword(e.target.value)}
-                  required
+                  onChange={setLoginPassword}
                   minLength={8}
                 />
               </div>
+
               <button
                 type="submit"
                 disabled={loading}
@@ -172,16 +215,15 @@ export default function AuthCard({ defaultTab }: Props) {
               >
                 {loading ? (
                   <span className="inline-block w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                ) : (
-                  "Sign In →"
-                )}
+                ) : "Sign In →"}
               </button>
+
               <p className="text-center text-sm font-medium text-neutral-500 dark:text-neutral-400 pt-2">
                 No account?{" "}
                 <button
                   type="button"
                   onClick={() => setTab("register")}
-                  className="font-bold text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300 hover:underline transition-colors"
+                  className="font-bold text-brand-600 dark:text-brand-400 hover:underline transition-colors"
                 >
                   Register free
                 </button>
@@ -227,16 +269,14 @@ export default function AuthCard({ defaultTab }: Props) {
                 <label className="block text-xs font-bold mb-2 font-display tracking-wider uppercase text-neutral-500 dark:text-neutral-400">
                   Password
                 </label>
-                <input
-                  className="w-full bg-neutral-50 dark:bg-neutral-950 border border-neutral-200 dark:border-neutral-800 text-neutral-900 dark:text-white rounded-xl py-3 px-4 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-all placeholder:text-neutral-400 shadow-sm"
-                  type="password"
-                  placeholder="min. 8 characters"
+                <PasswordInput
                   value={regPassword}
-                  onChange={(e) => setRegPassword(e.target.value)}
-                  required
+                  onChange={setRegPassword}
+                  placeholder="min. 8 characters"
                   minLength={8}
                 />
               </div>
+
               <button
                 type="submit"
                 disabled={loading}
@@ -244,16 +284,15 @@ export default function AuthCard({ defaultTab }: Props) {
               >
                 {loading ? (
                   <span className="inline-block w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                ) : (
-                  "Create Account →"
-                )}
+                ) : "Create Account →"}
               </button>
+
               <p className="text-center text-sm font-medium text-neutral-500 dark:text-neutral-400 pt-2">
                 Already have one?{" "}
                 <button
                   type="button"
                   onClick={() => setTab("login")}
-                  className="font-bold text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300 hover:underline transition-colors"
+                  className="font-bold text-brand-600 dark:text-brand-400 hover:underline transition-colors"
                 >
                   Sign in
                 </button>
