@@ -6,6 +6,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import toast from "react-hot-toast";
 import BirthdayForm from "./BirthdayForm";
 import BirthdayList from "./BirthdayList";
+import ImportExportMenu from "./ImportExportMenu";
 
 interface Birthday {
   _id: string;
@@ -40,6 +41,16 @@ export default function DashboardClient({ initialBirthdays, userName }: Props) {
   useEffect(() => {
     setIsDark(document.documentElement.classList.contains("dark"));
   }, []);
+
+  const fetchBirthdays = async () => {
+    try {
+      const res = await fetch("/api/birthdays");
+      const data = await res.json();
+      setBirthdays(data);
+    } catch {
+      toast.error("Failed to refresh birthdays");
+    }
+  };
 
   const toggleDark = () => {
     const isNowDark = document.documentElement.classList.toggle("dark");
@@ -267,17 +278,20 @@ export default function DashboardClient({ initialBirthdays, userName }: Props) {
                 : "Add Birthday"
               : "Your Birthdays"}
           </h2>
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.98 }}
-            onClick={() => {
-              if (showForm && editData) setEditData(null);
-              setShowForm(!showForm);
-            }}
-            className="font-display font-bold text-sm px-5 py-2.5 rounded-xl bg-brand-500 hover:bg-brand-600 text-white shadow-lg shadow-brand-500/30 transition-all"
-          >
-            {showForm ? "✕ Cancel" : "+ Add Birthday"}
-          </motion.button>
+          <div className="flex items-center gap-3">
+            <ImportExportMenu onImportSuccess={fetchBirthdays} />
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => {
+                if (showForm && editData) setEditData(null);
+                setShowForm(!showForm);
+              }}
+              className="font-display font-bold text-sm px-5 py-2.5 rounded-xl bg-brand-500 hover:bg-brand-600 text-white shadow-lg shadow-brand-500/30 transition-all"
+            >
+              {showForm ? "✕ Cancel" : "+ Add Birthday"}
+            </motion.button>
+          </div>
         </div>
 
         <AnimatePresence>
