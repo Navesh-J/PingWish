@@ -194,7 +194,7 @@ export async function GET() {
     yPos = (doc as jsPDF & { lastAutoTable: { finalY: number } }).lastAutoTable.finalY + 10;
   });
 
-  // ── Footer on last page ─────────────────────────────────────────────────
+  // ── Footer on last page 
   const totalPages = (doc as any).getNumberOfPages();
   for (let i = 1; i <= totalPages; i++) {
     doc.setPage(i);
