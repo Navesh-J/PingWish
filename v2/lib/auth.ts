@@ -25,21 +25,30 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         );
         if (!isValid) return null;
 
+        if (!user.isVerified) {
+          throw new Error("EMAIL_NOT_VERIFIED");
+        }
+
         return {
           id: user._id.toString(),
           email: user.email,
           name: user.name,
+          timezone: user.timezone,
         };
       },
     }),
   ],
   callbacks: {
     jwt({ token, user }) {
-      if (user) token.id = user.id;
+      if (user) {
+        token.id = user.id;
+        token.timezone = (user as { timezone?: string }).timezone;
+      }
       return token;
     },
     session({ session, token }) {
       if (token?.id) session.user.id = token.id as string;
+      if (token?.timezone) session.user.timezone = token.timezone as string;
       return session;
     },
   },
