@@ -195,7 +195,7 @@ export async function GET() {
   });
 
   // ── Footer on last page ─────────────────────────────────────────────────
-  const totalPages = doc.getNumberOfPages();
+  const totalPages = (doc as any).getNumberOfPages();
   for (let i = 1; i <= totalPages; i++) {
     doc.setPage(i);
     doc.setFont("helvetica", "normal");
