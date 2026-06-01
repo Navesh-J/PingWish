@@ -9,19 +9,70 @@ export async function POST(req: Request) {
     const { name, email, password, timezone } = await req.json();
 
     if (!name || !email || !password)
-      return NextResponse.json({ message: "All fields required" }, { status: 400 });
+      return NextResponse.json(
+        { message: "All fields required" },
+        { status: 400 },
+      );
 
     if (password.length < 8)
       return NextResponse.json(
         { message: "Password must be at least 8 characters" },
-        { status: 400 }
+        { status: 400 },
       );
 
     await connectDB();
 
     const existing = await User.findOne({ email: email.toLowerCase() });
-    if (existing)
-      return NextResponse.json({ message: "Email already in use" }, { status: 400 });
+    if (existing) {
+      if (!existing.isVerified) {
+        // Resend verification email instead of blocking
+        const verifyToken = crypto.randomBytes(32).toString("hex");
+        const verifyTokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000);
+
+        await User.updateOne(
+          { _id: existing._id },
+          { $set: { verifyToken, verifyTokenExpiry } },
+        );
+
+        const verifyUrl = `${process.env.NEXTAUTH_URL}/verify-email?token=${verifyToken}`;
+
+        await sendEmail({
+          to: existing.email,
+          subject: "Verify your PingWish account",
+          html: `
+        <div style="font-family: sans-serif; max-width: 480px; margin: auto; padding: 32px; border-radius: 16px; background: #fff7ed; border: 1px solid #fed7aa;">
+          <div style="text-align: center; margin-bottom: 24px;">
+            <span style="font-size: 40px;">🎂</span>
+            <h1 style="color: #ea580c; font-size: 24px; margin: 8px 0 0;">PingWish</h1>
+          </div>
+          <h2 style="color: #1a1814; font-size: 20px; margin-bottom: 8px;">Welcome, ${existing.name}! 🎉</h2>
+          <p style="color: #6b6558; font-size: 15px; line-height: 1.6; margin-bottom: 24px;">
+            Here's a fresh verification link for your account.
+          </p>
+          <a href="${verifyUrl}"
+            style="display: inline-block; background: #f97316; color: white; font-weight: 700; font-size: 15px; padding: 14px 28px; border-radius: 12px; text-decoration: none;">
+            Verify Email →
+          </a>
+          <p style="color: #9b9385; font-size: 13px; margin-top: 24px;">
+            This link expires in <strong>24 hours</strong>.
+          </p>
+        </div>
+      `,
+        });
+
+        return NextResponse.json(
+          {
+            message:
+              "Account exists but is unverified. A new verification link has been sent.",
+          },
+          { status: 200 },
+        );
+      }
+      return NextResponse.json(
+        { message: "Email already in use" },
+        { status: 400 },
+      );
+    }
 
     const verifyToken = crypto.randomBytes(32).toString("hex");
     const verifyTokenExpiry = new Date(Date.now() + 24 * 60 * 60 * 1000);
@@ -36,7 +87,7 @@ export async function POST(req: Request) {
 
     await User.updateOne(
       { _id: user._id },
-      { $set: { verifyToken, verifyTokenExpiry } }
+      { $set: { verifyToken, verifyTokenExpiry } },
     );
 
     const verifyUrl = `${process.env.NEXTAUTH_URL}/verify-email?token=${verifyToken}`;
@@ -69,7 +120,7 @@ export async function POST(req: Request) {
 
     return NextResponse.json(
       { message: "Account created. Please verify your email." },
-      { status: 201 }
+      { status: 201 },
     );
   } catch (err) {
     console.error(err);

@@ -41,13 +41,37 @@ function PasswordInput({
         aria-label={show ? "Hide password" : "Show password"}
       >
         {show ? (
-          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+          <svg
+            className="w-5 h-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"
+            />
           </svg>
         ) : (
-          <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-            <path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+          <svg
+            className="w-5 h-5"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke="currentColor"
+            strokeWidth={2}
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+            />
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+            />
           </svg>
         )}
       </button>
@@ -117,6 +141,11 @@ export default function AuthCard({ defaultTab }: Props) {
         }),
       });
       const data = await res.json();
+      if (res.status === 200 || res.status === 201) {
+        // Both new account and resent verification go to unverified page
+        router.push(`/unverified?email=${encodeURIComponent(regEmail)}`);
+        return;
+      }
       if (!res.ok) {
         toast.error(data.message || "Registration failed");
         return;
@@ -195,11 +224,18 @@ export default function AuthCard({ defaultTab }: Props) {
                   <label className="block text-xs font-bold font-display tracking-wider uppercase text-neutral-500 dark:text-neutral-400">
                     Password
                   </label>
-                  <Link href="/reset-password" className="text-xs font-semibold text-brand-600 dark:text-brand-400 hover:underline">
+                  <Link
+                    href="/reset-password"
+                    className="text-xs font-semibold text-brand-600 dark:text-brand-400 hover:underline"
+                  >
                     Forgot password?
                   </Link>
                 </div>
-                <PasswordInput value={loginPassword} onChange={setLoginPassword} minLength={8} />
+                <PasswordInput
+                  value={loginPassword}
+                  onChange={setLoginPassword}
+                  minLength={8}
+                />
               </div>
               <button
                 type="submit"
@@ -208,12 +244,17 @@ export default function AuthCard({ defaultTab }: Props) {
               >
                 {loading ? (
                   <span className="inline-block w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                ) : "Sign In →"}
+                ) : (
+                  "Sign In →"
+                )}
               </button>
               <p className="text-center text-sm font-medium text-neutral-500 dark:text-neutral-400 pt-2">
                 No account?{" "}
-                <button type="button" onClick={() => setTab("register")}
-                  className="font-bold text-brand-600 dark:text-brand-400 hover:underline">
+                <button
+                  type="button"
+                  onClick={() => setTab("register")}
+                  className="font-bold text-brand-600 dark:text-brand-400 hover:underline"
+                >
                   Register free
                 </button>
               </p>
@@ -272,12 +313,17 @@ export default function AuthCard({ defaultTab }: Props) {
               >
                 {loading ? (
                   <span className="inline-block w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                ) : "Create Account →"}
+                ) : (
+                  "Create Account →"
+                )}
               </button>
               <p className="text-center text-sm font-medium text-neutral-500 dark:text-neutral-400 pt-2">
                 Already have one?{" "}
-                <button type="button" onClick={() => setTab("login")}
-                  className="font-bold text-brand-600 dark:text-brand-400 hover:underline">
+                <button
+                  type="button"
+                  onClick={() => setTab("login")}
+                  className="font-bold text-brand-600 dark:text-brand-400 hover:underline"
+                >
                   Sign in
                 </button>
               </p>
